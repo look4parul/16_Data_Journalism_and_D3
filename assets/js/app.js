@@ -16,9 +16,11 @@ let height = svgHeight - margin.top - margin.bottom
 
 let svg = d3
   .select("#scatter")
+  . attr("align","right")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight)
+  // .style("align", "center")
 
 let chartGroup = svg
   .append("g")
@@ -175,7 +177,7 @@ let textGroup =
     // .text(d => d.abbr)
     .text(data => data.abbr)
     // .text('CK')
-    .attr("font-family", "sans-serif")
+    // .attr("font-family", "sans-serif")
     
     // .attr("fill", "black")
 
@@ -214,7 +216,7 @@ let textGroup =
       .append("text")
       // .attr("transform", "rotate(-90)")
       .attr("y", -30)
-      .attr("x", -140)
+      .attr("x", -200)
       // .attr("dy", "1em")
       .attr("value", "healthcare")
       .classed("active", true)
@@ -223,7 +225,7 @@ let textGroup =
       .append("text")
       // .attr("transform", "rotate(-90)")
       .attr("y", -50)
-      .attr("x", -140)
+      .attr("x", -200)
       // .attr("dy", "3em")
       .attr("value", "obesity")
       .classed("inactive", true)
@@ -233,7 +235,7 @@ let textGroup =
       .append("text")
       // .attr("transform", "rotate(-90)")
       .attr("y", -70)
-      .attr("x", -140)
+      .attr("x", -200)
       .attr("value", "smokes")
       // .attr("dy", "9em")
       .classed("inactive", true)
