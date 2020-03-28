@@ -1,4 +1,5 @@
 // Code to append the scatter chart
+// Set up the chart dimensions
 const svgWidth = 960
 const svgHeight = 600
 
@@ -16,11 +17,10 @@ let height = svgHeight - margin.top - margin.bottom
 
 let svg = d3
   .select("#scatter")
-  . attr("align","right")
+  .attr("align","right")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight)
-  // .style("align", "center")
 
 let chartGroup = svg
   .append("g")
@@ -37,9 +37,9 @@ function xScale(data, currentSelection) {
   let xLinearScale = d3
     .scaleLinear()
     .domain([
-      d3.min(data.map(d => parseInt(d[currentSelection]))) * 0.8,
-      d3.max(data.map(d => parseInt(d[currentSelection]))) * 1.2
-    ])
+            d3.min(data.map(d => parseInt(d[currentSelection]))) * 0.8,
+            d3.max(data.map(d => parseInt(d[currentSelection]))) * 1.2
+            ])
     .range([0, width])
   return xLinearScale
 }
@@ -52,10 +52,8 @@ function yScale(data, ycurrentSelection) {
     .scaleLinear()
     .domain([
       d3.min(data.map(d => parseInt(d[ycurrentSelection]))) * 0.8,
-      //  * 0.8,
       d3.max(data.map(d => parseInt(d[ycurrentSelection]))) * 1.2
-      //  * 1.2
-    ])
+            ])
     .range([height, 0])
   return yLinearScale
 }
@@ -76,7 +74,6 @@ function renderAxes(newXScale, xAxis) {
  * Returns and appends an updated x-axis based on a scale.
  **/
 function renderYAxes(newYScale, yAxis) {
-  // let bottomAxis = d3.axisBottom(newXScale)
   let leftAxis = d3.axisLeft(newYScale)
   yAxis
     .transition()
@@ -102,17 +99,6 @@ function renderCircles(circlesGroup, newXScale, currentSelection, newYScale, ycu
   return circlesGroup
 }
 
-// /**
-//  * Returns and appends an updated circles group based on a new scale and the currect selection.
-//  **/
-// function renderYCircles(circlesGroup, newYScale, ycurrentSelection) {
-//   circlesGroup
-//     .transition()
-//     .duration(1000)
-//     .attr("cy", d => newYScale(d[ycurrentSelection]))
-//   return circlesGroup
-// }
-
 ;(function() {
   // Import the .csv file
   d3.csv("assets/data/data.csv").then(data => {
@@ -120,12 +106,7 @@ function renderCircles(circlesGroup, newXScale, currentSelection, newYScale, ycu
 
   let xLinearScale = xScale(data, currentSelection)
   let yLinearScale = yScale(data, ycurrentSelection)
-  // let yLinearScale = d3
-  //   .scaleLinear()
-  //   // .domain([0, d3.max(data.map(d => d.healthcare))])
-  //   .domain([0, d3.max(data.map(d => parseInt(d.healthcare)))])
-  //   .range([height, 0])
-    
+      
   let bottomAxis = d3.axisBottom(xLinearScale)
   console.log(bottomAxis)
     
@@ -155,8 +136,6 @@ let circlesGroup = chartGroup
     // .attr("value", d => d.state)
     .attr("fill", "blue")
     .attr("opacity", ".5")
-    // .text(function(d){return d.state})
-    // .text(d => d.state)
     
 let textGroup = 
   // svgappend("g")
@@ -169,17 +148,12 @@ let textGroup =
     .style("font", "12px Helvetica, Arial, sans-serif")
     .style("fill", "black")
     .attr("x", d => xLinearScale(d[currentSelection]))
-    // .attr("y",d => yLinearScale(d.healthcare))
     .attr("y",d => yLinearScale(d[ycurrentSelection]))
-
-    // .attr("dy", ".2em") 
+    // .text(function(data){return data.abbr})
     .attr("text-anchor", "middle")
-    // .text(d => d.abbr)
     .text(data => data.abbr)
-    // .text('CK')
-    // .attr("font-family", "sans-serif")
+    // .text('PK')
     
-    // .attr("fill", "black")
 
   let labelsGroup = chartGroup
     .append("g")
@@ -210,34 +184,27 @@ let textGroup =
   let ylabelsGroup = chartGroup
     .append("g")
     .attr("transform", "rotate(-90)")
-    // `translate(${width / 2}, ${height + 20})`)    
 
     ylabelsGroup
       .append("text")
-      // .attr("transform", "rotate(-90)")
       .attr("y", -30)
       .attr("x", -200)
-      // .attr("dy", "1em")
       .attr("value", "healthcare")
       .classed("active", true)
       .text("Lacks Healthcare(%)")
     ylabelsGroup
       .append("text")
-      // .attr("transform", "rotate(-90)")
       .attr("y", -50)
       .attr("x", -200)
-      // .attr("dy", "3em")
       .attr("value", "obesity")
       .classed("inactive", true)
       .text("Obesity(%)")  
 
     ylabelsGroup
       .append("text")
-      // .attr("transform", "rotate(-90)")
       .attr("y", -70)
       .attr("x", -200)
       .attr("value", "smokes")
-      // .attr("dy", "9em")
       .classed("inactive", true)
       .text("Smoke(%)")    
     
@@ -261,7 +228,7 @@ let textGroup =
           currentSelection, yLinearScale, ycurrentSelection, textGroup
         ) } })
       
-    // Crate an event listener to call the update functions when a label is clicked
+    // Create an event listener to call the update functions when a label is clicked
     ylabelsGroup.selectAll("text").on("click", function() {
 
       console.log("Text group: "+textGroup)
